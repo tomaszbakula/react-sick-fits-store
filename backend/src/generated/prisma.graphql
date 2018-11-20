@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/tomasz-bakula-d8a865/sick-fits/dev
-# timestamp: Tue Nov 20 2018 13:59:14 GMT+0100 (Central European Standard Time)
+# timestamp: Tue Nov 20 2018 14:28:31 GMT+0100 (Central European Standard Time)
 
 type AggregateItem {
   count: Int!
@@ -14,8 +14,6 @@ type BatchPayload {
   count: Long!
 }
 
-scalar DateTime
-
 type Item implements Node {
   id: ID!
   title: String!
@@ -23,8 +21,6 @@ type Item implements Node {
   image: String
   largeImage: String
   price: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -67,10 +63,10 @@ enum ItemOrderByInput {
   largeImage_DESC
   price_ASC
   price_DESC
-  createdAt_ASC
-  createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type ItemPreviousValues {
@@ -80,8 +76,6 @@ type ItemPreviousValues {
   image: String
   largeImage: String
   price: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 type ItemSubscriptionPayload {
@@ -370,50 +364,6 @@ input ItemWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Int
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
 }
 
 input ItemWhereUniqueInput {
