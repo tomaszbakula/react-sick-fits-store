@@ -13,15 +13,11 @@
 # }
 
 type Mutation {
-  createItem(
-    title: String!
-    description: String!
-    image: String
-    largeImage: String
-    price: Int!
-  ): Item!
+  createItem( title: String! description: String! image: String largeImage: String price: Int! ): Item!
+  updateItem( id: ID! title: String description: String price: Int ): Item!
 }
 
 type Query {
   items: [Item]!
+  item(where: ItemWhereUniqueInput!): Item
 }
