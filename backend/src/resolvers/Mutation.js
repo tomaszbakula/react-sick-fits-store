@@ -53,9 +53,43 @@ const Mutations = {
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
     });
 
+    // Generate JWT token
+    ctx = generateJWT(ctx, user.id);
+
     // Return user to the browser
+    return user;
+  },
+
+  async signin(parent, { email, password }, ctx, info) {
+    // Check if there is a user with that password.
+    const user = await ctx.db.query.user({ where: { email }});
+    if (!user)
+      throw new Error(`No such user found for email ${email}.`);
+
+    // Check if the password is correct.
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid)
+      throw new Error('Invalid password!');
+
+    // Generate JWT token.
+    ctx = generateJWT(ctx, user.id);
+
+    // Return the user.
     return user;
   }
 };
+
+const generateJWT = (ctx, userId) => {
+    // Generate JWT for user
+    const token = jwt.sign({ userId }, process.env.APP_SECRET);
+
+    // Set JWT as a cookie on the response
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+    });
+
+    return ctx;
+}
 
 module.exports = Mutations;
