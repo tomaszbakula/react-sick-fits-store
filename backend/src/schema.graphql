@@ -1,16 +1,8 @@
 # import * from './generated/prisma.graphql'
 
-# input createItemInput {
-#   title: String!
-#   description: String!
-#   image: String
-#   largeImage: String
-#   price: Int!
-# }
-
-# type Mutation {
-#   createItem(data: createItemInput!): Item!
-# }
+type SuccessMessage {
+  message: String
+}
 
 type Mutation {
   createItem( title: String! description: String! image: String largeImage: String price: Int! ): Item!
@@ -18,6 +10,7 @@ type Mutation {
   deleteItem( id: ID! ): Item
   signup(email: String! password: String! name: String!): User!
   signin(email: String! password: String!): User!
+  signout: SuccessMessage
 }
 
 type Query {
