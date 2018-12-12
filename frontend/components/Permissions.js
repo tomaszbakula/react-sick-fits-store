@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import Error from './ErrorMessage';
 import Table from './styles/Table';
 import SickButton from './styles/SickButton';
+import propTypes from 'prop-types';
 
 const possiblePermissions = [
   'ADMIN',
@@ -46,6 +47,31 @@ const Permissions = props => <Query query={ALL_USERS_QUERY}>
 </Query>
 
 class User extends React.Component {
+  static propTypes = {
+    user: propTypes.shape({
+      id: propTypes.string,
+      name: propTypes.string,
+      email: propTypes.string,
+      permissions: propTypes.array
+    }).isRequired
+  }
+
+  state = {
+    permissions: this.props.user.permissions
+  }
+
+  handlePermissionChange = e => {
+    const checkbox = e.target;
+    let updatedPermissions = [...this.state.permissions];
+    if (checkbox.checked) {
+      updatedPermissions.push(checkbox.value);
+    } else {
+      updatedPermissions = updatedPermissions.filter(perm => perm !== checkbox.value);
+    }
+    this.setState({ permissions: updatedPermissions });
+    console.log(updatedPermissions)
+  }
+
   render() {
     const user = this.props.user;
     return (
@@ -55,7 +81,12 @@ class User extends React.Component {
         {possiblePermissions.map(perm => (
           <td key={perm}>
             <label htmlFor={`${user.id}-permission-${user.perm}`}>
-              <input type="checkbox"/>
+              <input
+                type="checkbox"
+                value={perm}
+                onChange={this.handlePermissionChange}
+                checked={this.state.permissions.includes(perm)}
+              />
             </label>
           </td>
         ))}
