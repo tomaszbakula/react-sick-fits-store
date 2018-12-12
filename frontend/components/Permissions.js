@@ -80,8 +80,9 @@ class User extends React.Component {
         <td>{user.email}</td>
         {possiblePermissions.map(perm => (
           <td key={perm}>
-            <label htmlFor={`${user.id}-permission-${user.perm}`}>
+            <label htmlFor={`${user.id}-permission-${perm}`}>
               <input
+                id={`${user.id}-permission-${perm}`}
                 type="checkbox"
                 value={perm}
                 onChange={this.handlePermissionChange}
