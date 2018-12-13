@@ -13,6 +13,13 @@ function createClient({ headers }) {
         headers,
       });
     },
+    // Local data.
+    clientState: {
+      defaults: {
+        cartOpen: true,
+      },
+      resolvers: {},
+    }
   });
 }
 
