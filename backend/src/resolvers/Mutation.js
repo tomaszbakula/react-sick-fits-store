@@ -204,7 +204,6 @@ const Mutations = {
 
     // Check if that item is already in their cart and increment by 1 if it is.
     if (existingCartItem) {
-      console.log('This item is already in the cart.');
       return ctx.db.mutation.updateCartItem({
         where: { id: existingCartItem.id },
         data: { quantity: existingCartItem.quantity + 1 }
@@ -222,6 +221,20 @@ const Mutations = {
         }
       }
     }, info);
+  },
+
+  async removeFromCart(parent, { id }, { db, request }, info) {
+    // Find the cart item.
+    const cartItem = await db.query.cartItem({ where: { id } }, `{ id, user { id } }`);
+    if (!cartItem)
+      throw new Error('Not cart item found!');
+
+    // Make sure they own that cart item.
+    if (cartItem.user.id !== request.userId)
+      throw new Error("You don't have permissions to remove this item.");
+
+    // Delete that cart item.
+    return db.mutation.deleteCartItem({ where: { id }}, info);
   }
 };
 
