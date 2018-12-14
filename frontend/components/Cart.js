@@ -20,7 +20,6 @@ const Cart = props => (
   <User>
     {({ data: { me }}) => {
       if (!me) return null;
-      console.log(me)
       return (
         <Query query={LOCAL_STATE_QUERY}>
           {({ data: { cartOpen } }) => (
