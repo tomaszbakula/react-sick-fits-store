@@ -4,7 +4,23 @@ import propTypes from 'prop-types';
 
 const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
-    me { id, email, name, permissions }
+    me {
+      id,
+      email,
+      name,
+      permissions,
+      cart {
+        id,
+        quantity,
+        item {
+          id,
+          title,
+          description,
+          price,
+          image
+        }
+      }
+    }
   }
 `;
 
