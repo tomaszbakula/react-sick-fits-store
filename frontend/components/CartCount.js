@@ -59,7 +59,7 @@ const CartCount = ({ count }) => (
   </AnimationStyles>
 );
 
-Dot.propTypes = {
+CartCount.propTypes = {
   count: PropTypes.number.isRequired
 }
 
