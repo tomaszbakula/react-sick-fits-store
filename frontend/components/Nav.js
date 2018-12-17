@@ -3,6 +3,7 @@ import { ApolloConsumer } from 'react-apollo';
 import User from './User'
 import NavStyles from './styles/NavStyles';
 import SignOut from './SignOut'
+import CartCount from './CartCount'
 
 const Nav = () => (
     <User>
@@ -16,7 +17,10 @@ const Nav = () => (
               <Link href="/me"><a>Account</a></Link>
               <SignOut />
               <ApolloConsumer>{client => (
-                <button onClick={() => client.writeData({ data: { cartOpen: true }})}>My Cart</button>
+                <button onClick={() => client.writeData({ data: { cartOpen: true }})}>
+                  My Cart
+                  <CartCount count={me.cart.reduce((total, cartItem) => total + cartItem.quantity, 0)} />
+                </button>
               )}</ApolloConsumer>
             </>
           )}

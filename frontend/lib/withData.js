@@ -16,7 +16,7 @@ function createClient({ headers }) {
     // Local data.
     clientState: {
       defaults: {
-        cartOpen: true,
+        cartOpen: false,
       },
       resolvers: {},
     }
