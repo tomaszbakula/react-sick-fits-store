@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
+import { adopt } from 'react-adopt';
 import CartStyles from './styles/CartStyles';
 import Supreme from './styles/Supreme';
 import CloseButton from './styles/CloseButton';
@@ -16,43 +17,43 @@ const LOCAL_STATE_QUERY = gql`
   }
 `;
 
-const Cart = props => (
-  <User>
-    {({ data: { me }}) => {
+const Composed = adopt({
+  user: ({ render }) => <User>{render}</User>,
+  toggleCart: ({ render }) => <ApolloConsumer>{render}</ApolloConsumer>,
+  localState: ({ render }) => <Query query={LOCAL_STATE_QUERY}>{render}</Query>
+});
+
+const Cart = () => (
+  <Composed>
+    {({ user, toggleCart, localState }) => {
+      const { me } = user.data;
+      const { cartOpen } = localState.data;
       if (!me) return null;
       return (
-        <Query query={LOCAL_STATE_QUERY}>
-          {({ data: { cartOpen } }) => (
-            <CartStyles open={cartOpen}>
+        <CartStyles open={cartOpen}>
 
-              <header>
-                <ApolloConsumer>
-                  {client => (
-                    <CloseButton
-                      title="close"
-                      onClick={() => client.writeData({ data: { cartOpen: false }})}
-                    >&times;</CloseButton>
-                  )}
-                </ApolloConsumer>
-                <Supreme>{me.name}'s Cart</Supreme>
-                <p>You have {me.cart.length} item{me.cart.length === 1 ? '' : 's'} in your cart.</p>
-              </header>
+          <header>
+            <CloseButton
+              title="close"
+              onClick={() => toggleCart.writeData({ data: { cartOpen: false }})}
+            >&times;</CloseButton>
+            <Supreme>{me.name}'s Cart</Supreme>
+            <p>You have {me.cart.length} item{me.cart.length === 1 ? '' : 's'} in your cart.</p>
+          </header>
 
-              <ul>
-                {me.cart.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}
-              </ul>
+          <ul>
+            {me.cart.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}
+          </ul>
 
-              <footer>
-                <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-                <SickButton>Checkout</SickButton>
-              </footer>
+          <footer>
+            <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+            <SickButton>Checkout</SickButton>
+          </footer>
 
-            </CartStyles>
-          )}
-        </Query>
+        </CartStyles>
       );
     }}
-  </User>
+  </Composed>
 );
 
 export default Cart;
